@@ -116,8 +116,8 @@ if st.button("Align"):
             st.text(f"{aligned_seq2}")
             st.text(f"Alignment score: {alignment_score}")
             st.text(f"Time taken for alignment: {elapsed_time:.4f} seconds")  # Display the execution time
-            st.text(f"The length of the sequence 1 is:{m}Bases") # Number of bases for seq1 and seq2 
-            st.text(f"The length of the sequence 2 is:{n}Bases")
+            st.text(f"The length of the sequence 1 is: {m} Bases") # Number of bases for seq1 and seq2 
+            st.text(f"The length of the sequence 2 is: {n} Bases")
 
         elif align_type == "Local":
             # Filling in the rest of the matrix for local alignment (similar to global but with 0 initiation)
@@ -197,7 +197,7 @@ if st.button("Align"):
             st.text(f"{aligned_seq1}")
             st.text(f"{aligned_seq2}")
             st.text(f"Time taken for alignment: {elapsed_time:.4f} seconds")  # Display the execution time
-            st.text(f"The length of the sequence 1 is:{m}Bases") # Number of bases for seq1 and seq2 
-            st.text(f"The length of the sequence 2 is:{n}Bases")
+            st.text(f"The length of the sequence 1 is: {m} Bases") # Number of bases for seq1 and seq2 
+            st.text(f"The length of the sequence 2 is: {n} Bases")
     else:
         st.warning("Please enter both sequences.")
