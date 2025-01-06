@@ -35,7 +35,7 @@ if st.button("Align"):
         matrix_global = [[0] * (n + 1) for _ in range(m + 1)]
         matrix_local = [[0] * (n + 1) for _ in range(m + 1)]
         
-       # Fill the first row and column with gap penalties for global alignment 
+        # Fill the first row and column with gap penalties for global alignment 
         for c in range(m + 1):
             matrix_global[c][0] = c * gap
         for r in range(n + 1):
@@ -66,58 +66,57 @@ if st.button("Align"):
                     )
 
             # Traceback process for global alignment
-            aligned1 = []
-            aligned2 = []
-            match_line = []  # For the match/mismatch line
+            aligned1_g = []
+            aligned2_g = []
+            alignment_score_global = 0  # Initialize the alignment score
 
             # Starting traceback from the bottom-right corner (matrix[m][n])
             c = m
             r = n
-            alignment_score = 0  # Initialize the alignment score
 
             while c > 0 or r > 0:
                 if c > 0 and r > 0 and matrix_global[c][r] == matrix_global[c - 1][r - 1] + (match if seq1[c - 1] == seq2[r - 1] else mismatch):
                     # Match or mismatch (diagonal move)
-                    aligned1.append(seq1[c - 1])
-                    aligned2.append(seq2[r - 1])
-                    alignment_score += match if seq1[c - 1] == seq2[r - 1] else mismatch
+                    aligned1_g.append(seq1[c - 1])
+                    aligned2_g.append(seq2[r - 1])
+                    alignment_score_global += match if seq1[c - 1] == seq2[r - 1] else mismatch
                     c -= 1
                     r -= 1
                 elif c > 0 and matrix_global[c][r] == matrix_global[c - 1][r] + gap:
                     # Gap in seq2 (up move)
-                    aligned1.append(seq1[c - 1])
-                    aligned2.append('-')
-                    alignment_score += gap
+                    aligned1_g.append(seq1[c - 1])
+                    aligned2_g.append('-')
+                    alignment_score_global += gap
                     c -= 1
                 elif r > 0 and matrix_global[c][r] == matrix_global[c][r - 1] + gap:
                     # Gap in seq1 (left move)
-                    aligned1.append('-')
-                    aligned2.append(seq2[r - 1])
-                    alignment_score += gap
+                    aligned1_g.append('-')
+                    aligned2_g.append(seq2[r - 1])
+                    alignment_score_global += gap
                     r -= 1
 
             # Reverse the alignments (since we built them backwards)
-            aligned1.reverse()
-            aligned2.reverse()
+            aligned1_g.reverse()
+            aligned2_g.reverse()
 
             # Display the aligned sequences and alignment score
             st.subheader("Global Alignment Result")
 
             # Convert lists into strings
-            aligned_seq1 = ''.join(aligned1)
-            aligned_seq2 = ''.join(aligned2)
+            aligned_seq1_global = ''.join(aligned1_g)
+            aligned_seq2_global = ''.join(aligned2_g)
 
             # End time measurement
             end_time = time.time()
             elapsed_time = end_time - start_time  # Time taken for the alignment
 
             # Display results of alignment, along with score and time taken
-            st.text(f"{aligned_seq1}")
-            st.text(f"{aligned_seq2}")
-            st.text(f"Alignment score: {alignment_score}")
+            st.text(f"{aligned_seq1_global}")
+            st.text(f"{aligned_seq2_global}")
+            st.text(f"Alignment score: {alignment_score_global}")
             st.text(f"Time taken for alignment: {elapsed_time:.4f} seconds")  # Display the execution time
-            st.text(f"The length of the sequence 1 is:   {m}  Bases") # Number of bases for seq1 and seq2 
-            st.text(f"The length of the sequence 2 is:   {n}  Bases")
+            st.text(f"The length of the sequence 1 is: {m} Bases") # Number of bases for seq1 and seq2 
+            st.text(f"The length of the sequence 2 is: {n} Bases")
 
         elif align_type == "Local":
             # Filling in the rest of the matrix for local alignment (similar to global but with 0 initiation)
@@ -139,9 +138,9 @@ if st.button("Align"):
                     )
 
             # Traceback process for local alignment
-            aligned1 = []
-            aligned2 = []
-            alignment_score = 0  # Initialize the alignment score
+            aligned1_l = []
+            aligned2_l = []
+            alignment_score_local = 0  # Initialize the alignment score
 
             # Start traceback from the highest score in the matrix
             # Find the maximum score and its position
@@ -158,46 +157,47 @@ if st.button("Align"):
             while i > 0 and j > 0 and matrix_local[i][j] > 0:
                 if matrix_local[i][j] == matrix_local[i - 1][j - 1] + (match if seq1[i - 1] == seq2[j - 1] else mismatch):
                     # Match or mismatch (diagonal move)
-                    aligned1.append(seq1[i - 1])
-                    aligned2.append(seq2[j - 1])
-                    alignment_score += match if seq1[i - 1] == seq2[j - 1] else mismatch
+                    aligned1_l.append(seq1[i - 1])
+                    aligned2_l.append(seq2[j - 1])
+                    alignment_score_local += match if seq1[i - 1] == seq2[j - 1] else mismatch
                     i -= 1
                     j -= 1
                 elif matrix_local[i][j] == matrix_local[i - 1][j] + gap:
                     # Gap in seq2 (up move)
-                    aligned1.append(seq1[i - 1])
-                    aligned2.append('-')
-                    alignment_score += gap
+                    aligned1_l.append(seq1[i - 1])
+                    aligned2_l.append('-')
+                    alignment_score_local += gap
                     i -= 1
                 elif matrix_local[i][j] == matrix_local[i][j - 1] + gap:
                     # Gap in seq1 (left move)
-                    aligned1.append('-')
-                    aligned2.append(seq2[j - 1])
-                    alignment_score += gap
+                    aligned1_l.append('-')
+                    aligned2_l.append(seq2[j - 1])
+                    alignment_score_local += gap
                     j -= 1
 
             # Reverse the alignments (since we built them backwards)
-            aligned1.reverse()
-            aligned2.reverse()
+            aligned1_l.reverse()
+            aligned2_l.reverse()
 
             # Display the aligned sequences and alignment score
             st.subheader("Local Alignment Result")
 
             # Convert lists into strings
-            aligned_seq1 = ''.join(aligned1)
-            aligned_seq2 = ''.join(aligned2)
+            aligned_seq1_local = ''.join(aligned1_l)
+            aligned_seq2_local = ''.join(aligned2_l)
 
             # End time measurement
             end_time = time.time()
             elapsed_time = end_time - start_time  # Time taken for the alignment
 
             # Display results of alignment, along with score and time taken
-            st.text(f"Score: {alignment_score}")
+            st.text(f"Score: {alignment_score_local}")
             st.text(f"Aligned Sequences:")
-            st.text(f"{aligned_seq1}")
-            st.text(f"{aligned_seq2}")
+            st.text(f"{aligned_seq1_local}")
+            st.text(f"{aligned_seq2_local}")
             st.text(f"Time taken for alignment: {elapsed_time:.4f} seconds")  # Display the execution time
-            st.text(f"The length of the sequence 1 is:   {m}  Bases") # Number of bases for seq1 and seq2 
-            st.text(f"The length of the sequence 2 is:   {n}  Bases")
+            st.text(f"The length of the sequence 1 is: {m} Bases") # Number of bases for seq1 and seq2 
+            st.text(f"The length of the sequence 2 is: {n} Bases")
+
     else:
         st.warning("Please enter both sequences.")
