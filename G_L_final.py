@@ -25,7 +25,7 @@ if st.button("Align"):
         # Defining the rewards and penalties
         match = 1
         mismatch = -1
-        gap = -1
+        gap = -2
 
         # Lengths of seq1 and seq2
         m = len(seq1)
