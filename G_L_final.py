@@ -1,4 +1,5 @@
-# pip install streamlit -> install the required streamlit package in terminal
+## pip install streamlit -> install the required streamlit package in terminal
+
 # Importing required packages
 import numpy as np
 import streamlit as st
@@ -34,17 +35,16 @@ if st.button("Align"):
         # Initializing the matrix with zeros, size (m+1) x (n+1) -> for global and local
         matrix_global = [[0] * (n + 1) for _ in range(m + 1)]
         matrix_local = [[0] * (n + 1) for _ in range(m + 1)]
-        
-        # Fill the first row and column with gap penalties for global alignment 
+
+        # Fill the first row and column with gap penalties for global alignment
         for c in range(m + 1):
             matrix_global[c][0] = c * gap
         for r in range(n + 1):
             matrix_global[0][r] = r * gap
 
-        # Filling the first row and column with zeros for local alignment 
+        # Filling the first row and column with zeros for local alignment
         for i in range(m + 1):
             matrix_local[i][0] = 0  # First column of matrix for local alignment
-
         for j in range(n + 1):
             matrix_local[0][j] = 0  # First row of matrix for local alignment
 
@@ -62,7 +62,7 @@ if st.button("Align"):
                     matrix_global[c][r] = max(
                         matrix_global[c - 1][r - 1] + score,  # Diagonal (match or mismatch)
                         matrix_global[c][r - 1] + gap,         # Horizontal (gap in seq2)
-                        matrix_global[c - 1][r] + gap          # Vertical (gap in seq1)
+                        matrix_global[c - 1][r] + gap         # Vertical (gap in seq1)
                     )
 
             # Traceback process for global alignment
@@ -101,7 +101,6 @@ if st.button("Align"):
 
             # Display the aligned sequences and alignment score
             st.subheader("Global Alignment Result")
-
             # Convert lists into strings
             aligned_seq1_global = ''.join(aligned1_g)
             aligned_seq2_global = ''.join(aligned2_g)
@@ -115,7 +114,7 @@ if st.button("Align"):
             st.text(f"{aligned_seq2_global}")
             st.text(f"Alignment score: {alignment_score_global}")
             st.text(f"Time taken for alignment: {elapsed_time:.4f} seconds")  # Display the execution time
-            st.text(f"The length of the sequence 1 is: {m} Bases") # Number of bases for seq1 and seq2 
+            st.text(f"The length of the sequence 1 is: {m} Bases")  # Number of bases for seq1 and seq2
             st.text(f"The length of the sequence 2 is: {n} Bases")
 
         elif align_type == "Local":
@@ -181,7 +180,6 @@ if st.button("Align"):
 
             # Display the aligned sequences and alignment score
             st.subheader("Local Alignment Result")
-
             # Convert lists into strings
             aligned_seq1_local = ''.join(aligned1_l)
             aligned_seq2_local = ''.join(aligned2_l)
@@ -196,8 +194,5 @@ if st.button("Align"):
             st.text(f"{aligned_seq1_local}")
             st.text(f"{aligned_seq2_local}")
             st.text(f"Time taken for alignment: {elapsed_time:.4f} seconds")  # Display the execution time
-            st.text(f"The length of the sequence 1 is: {m} Bases") # Number of bases for seq1 and seq2 
-            st.text(f"The length of the sequence 2 is: {n} Bases")
+            st.text(f"The length of the sequence 1 is: {m} Bases")  # Number of bases for seq1 and seq2
 
-    else:
-        st.warning("Please enter both sequences.")
