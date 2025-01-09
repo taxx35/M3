@@ -21,6 +21,9 @@ st.header("Input Sequences")
 seq1 = st.text_input("Enter Sequence 1:", placeholder="e.g., GATTACA")
 seq2 = st.text_input("Enter Sequence 2:", placeholder="e.g., ATTACATTAC")
 
+# Initialize start_time_local before using it
+start_time_local = None
+
 # If align button pressed, then perform the following commands
 if st.button("Align"):
     if seq1 and seq2:
@@ -119,6 +122,7 @@ if st.button("Align"):
             st.text(f"The length of the sequence 1 is: {m} Bases")  # Number of bases for seq1 and seq2
             st.text(f"The length of the sequence 2 is: {n} Bases")  # Time measurement for Local Alignment
 
+            # Initialize start_time_local after Global alignment is done
             start_time_local = time.time()
 
         # Else if the align type is Local, then do the following
@@ -199,4 +203,3 @@ if st.button("Align"):
             # Display the execution time
             st.text(f"The length of the sequence 1 is: {m} Bases")  # Number of bases for seq1 and seq2
             st.text(f"The length of the sequence 2 is: {n} Bases")
-
