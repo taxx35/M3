@@ -54,6 +54,10 @@ if st.button("Align"):
         for j in range(n + 1):
             matrix_local[0][j] = 0  # Sets value in the first row of each column to 0
 
+        # Initialize start_time_local before the alignments to avoid issues
+        if start_time_local is None:
+            start_time_local = time.time()
+
         # Choosing align type Global from the sidebar, then do the following
         if align_type == "Global":
             # Filling in the rest of the matrix for global alignment
